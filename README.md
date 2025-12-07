@@ -37,40 +37,30 @@ A modern, real-time investment portfolio tracking dashboard built with Next.js. 
    npm install
    ```
 
-3. **Set up environment variables**
+3. **Set up environment variables (local development)**
    
-   Create a `.env.local` file in the root directory:
+   Create a `.env.local` file in the root directory with:
    ```env
    ALPHA_VANTAGE_API_KEY=your_api_key_here
+   EDGE_CONFIG_URL=https://edge-config.vercel.com
+   EDGE_CONFIG_TOKEN=your_edge_config_read_token
    ```
-
-4. **Configure your portfolio**
    
-   Edit `portfolio.json` to add your holdings:
-   ```json
-   {
-     "holdings": [
-       {
-         "symbol": "GOOGL",
-         "shares": 5,
-         "category": "Stocks"
-       }
-     ],
-     "cash": 10000,
-     "categories": {
-       "Stocks": "#FF6384",
-       "Bonds": "#36A2EB",
-       "Cash": "#FFCE56"
-     }
-   }
-   ```
+   For local testing without Vercel Edge Config, you can skip the Edge Config vars for now (the app will error with a clear message).
+
+4. **Configure your portfolio in Vercel Edge Config**
+   
+   - Go to your Vercel project → **Edge Configs**
+   - Create a new Edge Config (or use existing) and add a key named `portfolio`
+   - Set the value to your portfolio JSON (see **⚙️ Configuration** section below for format)
+   - Generate a read-only token and add `EDGE_CONFIG_URL` and `EDGE_CONFIG_TOKEN` to your `.env.local`
 
 5. **Run the development server**
    ```bash
    npm run dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+   Open [http://localhost:3000](http://localhost:3000) in your browser. You should see the dashboard with your portfolio data.
 
 ## 📁 Project Structure
 
