@@ -6,6 +6,7 @@ interface Holding {
   symbol: string;
   shares: number;
   category: string;
+  targetPercentage?: number; // optional target allocation (0-100)
 }
 
 interface PortfolioConfig {

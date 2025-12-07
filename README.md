@@ -107,19 +107,24 @@ To configure your portfolio value in Edge Config, set the `portfolio` key to a J
 {
   "holdings": [
     {
-      "symbol": "GOOGL",      // Stock ticker symbol
-      "shares": 5,            // Number of shares owned
-      "category": "Stocks"    // Asset category
+      "symbol": "GOOGL",           // Stock ticker symbol
+      "shares": 5,                 // Number of shares owned
+      "category": "Stocks",        // Asset category
+      "targetPercentage": 30       // (optional) Target allocation % for this holding
     }
   ],
-  "cash": 8000,               // Cash balance
+  "cash": 8000,                    // Cash balance
   "categories": {
-    "Stocks": "#FF6384",      // Category name and chart color
+    "Stocks": "#FF6384",           // Category name and chart color
     "Bonds": "#36A2EB",
     "Cash": "#FFCE56"
   }
 }
 ```
+
+**Optional Fields:**
+
+- `targetPercentage` (number, 0–100): Desired allocation percentage for a holding. When provided for at least one holding, a "Target %" column appears in the dashboard holdings table showing your allocation targets vs. actual percentages. If omitted for all holdings, this column is hidden.
 
 Notes:
 
