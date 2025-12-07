@@ -97,9 +97,11 @@ portfolio-dashboard/
 
 ## ⚙️ Configuration
 
-### Portfolio Configuration (`portfolio.json`)
+### Portfolio Configuration (Vercel Edge Config)
 
-The `portfolio.json` file stores your current investment holdings:
+Portfolio data is stored in Vercel Edge Config using the `portfolio` key. This project reads that key via the `@vercel/edge-config` SDK helper in `lib/edge-config.ts`.
+
+To configure your portfolio value in Edge Config, set the `portfolio` key to a JSON value with this shape:
 
 ```json
 {
@@ -118,6 +120,13 @@ The `portfolio.json` file stores your current investment holdings:
   }
 }
 ```
+
+Notes:
+
+- The app no longer relies on a local `portfolio.json` file in production — Edge Config is the source of truth.
+- See the **Vercel Edge Config** section below for setup steps, required env vars (`EDGE_CONFIG_URL`, `EDGE_CONFIG_TOKEN`), and the SDK helper path (`lib/edge-config.ts`).
+
+If Edge Config is not configured, the `/api/portfolio` endpoint will return a 500 error describing the missing key so you can fix the deployment configuration.
 
 ## 🔌 API
 
