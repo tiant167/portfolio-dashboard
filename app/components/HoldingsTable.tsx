@@ -48,6 +48,7 @@ export default function HoldingsTable({ holdings, totalValue, cashValue }: Holdi
               return (
                 <tr key={row.symbol} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="py-3 px-4 text-gray-900 font-medium">{row.symbol}</td>
+                  <td className="py-3 px-4 text-right text-gray-700">{row.isCash ? '-' : row.shares}</td>
                   <td className="py-3 px-4 text-right text-gray-700">
                     {row.isCash ? '-' : `$${row.currentPrice.toFixed(2)}`}
                   </td>
