@@ -1,0 +1,25 @@
+{
+  "holdings": [
+    {
+      "symbol": "GOOGL",
+      "shares": 5,
+      "category": "Stocks"
+    },
+    {
+      "symbol": "MSFT",
+      "shares": 15,
+      "category": "Stocks"
+    },
+    {
+      "symbol": "BND",
+      "shares": 20,
+      "category": "Bonds"
+    }
+  ],
+  "cash": 8000,
+  "categories": {
+    "Stocks": "#FF6384",
+    "Bonds": "#36A2EB",
+    "Cash": "#FFCE56"
+  }
+}
