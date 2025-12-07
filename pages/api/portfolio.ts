@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getPortfolioFromEdge } from '../../lib/edge-config';
+import { getCachedPrice, setCachedPrice } from '../../lib/price-cache';
 
 // Define interfaces for better type safety
 interface Holding {
@@ -29,6 +30,16 @@ async function fetchCurrentPrice(symbol: string) {
     throw new Error('ALPHA_VANTAGE_API_KEY is not set');
   }
 
+  // Check cache first (30 minute TTL)
+  try {
+    const cached = await getCachedPrice(symbol);
+    if (cached !== null && typeof cached === 'number') {
+      return cached;
+    }
+  } catch {
+    // ignore cache errors and continue to fetch
+  }
+
   const response = await fetch(
     `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`
   );
@@ -41,7 +52,13 @@ async function fetchCurrentPrice(symbol: string) {
 
   const globalQuote = data['Global Quote'];
   if (globalQuote && globalQuote['05. price']) {
-    return parseFloat(globalQuote['05. price']);
+    const price = parseFloat(globalQuote['05. price']);
+    try {
+      await setCachedPrice(symbol, price);
+    } catch {
+      // ignore cache write errors
+    }
+    return price;
   }
   console.warn(`No current price data for ${symbol}`);
   return null;
