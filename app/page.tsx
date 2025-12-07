@@ -114,7 +114,11 @@ export default function Home() {
 
         {/* Holdings Table */}
         <div className="mb-8">
-          <HoldingsTable holdings={portfolioData.holdings} />
+          <HoldingsTable
+            holdings={portfolioData.holdings}
+            totalValue={portfolioData.totalCurrentValue}
+            cashValue={portfolioData.categorizedValues['Cash'] || 0}
+          />
         </div>
       </div>
     </div>
