@@ -13,6 +13,10 @@ A modern, real-time investment portfolio tracking dashboard built with Next.js. 
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Type-Safe**: Built with TypeScript for better developer experience
 
+## 📸 Dashboard Preview
+
+![Portfolio Dashboard](./capture-demo.png)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
