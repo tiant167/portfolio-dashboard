@@ -20,32 +20,32 @@ interface HoldingWithPrice extends Holding {
   value: number;
 }
 
-// Function to fetch current stock price from Alpha Vantage
+// Function to fetch current stock price from Finnhub
 async function fetchCurrentPrice(symbol: string) {
-  if (symbol === 'CASH') {
-    return 1; // Cash value is 1 per unit
-  }
-  const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
+  if (symbol === 'CASH') return 1; // Cash value is 1 per unit
+
+  const apiKey = process.env.FINNHUB_API_KEY;
   if (!apiKey) {
-    throw new Error('ALPHA_VANTAGE_API_KEY is not set');
+    throw new Error('FINNHUB_API_KEY is not set. Set it in your environment (e.g. .env.local or Vercel project settings).');
   }
 
-  const response = await fetch(
-    `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`
-  );
-  const data = await response.json();
-
-  if (data['Error Message']) {
-    console.error(`Alpha Vantage Error for ${symbol}:`, data['Error Message']);
+  // Finnhub quote endpoint returns { c: current, h, l, o, pc, t }
+  try {
+    const resp = await fetch(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${apiKey}`);
+    if (!resp.ok) {
+      console.warn(`Finnhub responded ${resp.status} for ${symbol}`);
+      return null;
+    }
+    const json = await resp.json();
+    if (json && typeof json.c === 'number' && json.c > 0) {
+      return json.c;
+    }
+    console.warn(`No current price (c) returned from Finnhub for ${symbol}`, json);
+    return null;
+  } catch (err) {
+    console.error('Error fetching price from Finnhub for', symbol, err);
     return null;
   }
-
-  const globalQuote = data['Global Quote'];
-  if (globalQuote && globalQuote['05. price']) {
-    return parseFloat(globalQuote['05. price']);
-  }
-  console.warn(`No current price data for ${symbol}`);
-  return null;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

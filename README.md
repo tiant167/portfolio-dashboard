@@ -4,7 +4,7 @@ A modern, real-time investment portfolio tracking dashboard built with Next.js. 
 
 ## 🎯 Features
 
-- **Real-Time Price Updates**: Fetch current stock prices from Alpha Vantage API
+- **Real-Time Price Updates**: Fetch current stock prices from Finnhub API
 - **Portfolio Allocation Chart**: Visual pie chart showing asset distribution by category
 - **Holdings Table**: Detailed breakdown of all holdings with current prices and values
 - **Category Breakdown**: View portfolio value by category (Stocks, Bonds, Cash)
@@ -22,7 +22,7 @@ A modern, real-time investment portfolio tracking dashboard built with Next.js. 
 ### Prerequisites
 
 - Node.js 18+ and npm
-- Alpha Vantage API key (free tier available at [alpha-vantage.co](https://www.alphavantage.co/))
+- Finnhub API key (free tier available at [finnhub.io](https://finnhub.io/))
 
 ### Installation
 
@@ -39,12 +39,12 @@ A modern, real-time investment portfolio tracking dashboard built with Next.js. 
 
 3. **Set up environment variables (local development)**
    
-   Create a `.env.local` file in the root directory with:
-   ```env
-   ALPHA_VANTAGE_API_KEY=your_api_key_here
-   EDGE_CONFIG_URL=https://edge-config.vercel.com
-   EDGE_CONFIG_TOKEN=your_edge_config_read_token
-   ```
+  Create a `.env.local` file in the root directory with:
+  ```env
+  FINNHUB_API_KEY=your_api_key_here
+  EDGE_CONFIG_URL=https://edge-config.vercel.com
+  EDGE_CONFIG_TOKEN=your_edge_config_read_token
+  ```
    
    For local testing without Vercel Edge Config, you can skip the Edge Config vars for now (the app will error with a clear message).
 
@@ -165,7 +165,7 @@ Returns current portfolio data with real-time prices.
 - **TypeScript** - Type safety
 - **Recharts** - Data visualization
 - **Tailwind CSS** - Styling
-- **Alpha Vantage API** - Real-time stock prices
+- **Finnhub API** - Real-time stock prices
 
 ## 🔐 API Key Security
 
@@ -175,15 +175,15 @@ Never commit your `.env.local` file. Add it to `.gitignore`:
 .env.local
 ```
 
-For production deployments on Vercel, set environment variables in your project settings.
+For production deployments on Vercel, set environment variables in your project settings. Use the key name `FINNHUB_API_KEY` (do not commit it to source control).
 
 ## 📊 Data Sources
 
-Stock prices are fetched from the [Alpha Vantage API](https://www.alphavantage.co/). The free tier includes:
-- Real-time stock quotes
-- Limited request rate (5 per minute)
+Stock prices are fetched from the [Finnhub API](https://finnhub.io/). Key points:
+- Real-time and delayed quotes are available via the `/quote` endpoint
+- Free tier available for personal use; rate limits apply (see Finnhub pricing and docs)
 
-For production use with higher volume, consider upgrading to a paid plan.
+For production use with higher volume, consider a paid plan or add server-side caching (Redis / Upstash) to avoid hitting rate limits.
 
 ## 🌐 Deployment
 
@@ -193,7 +193,7 @@ The easiest way to deploy is using [Vercel](https://vercel.com):
 
 1. Push your code to GitHub
 2. Connect your repository to Vercel
-3. Set `ALPHA_VANTAGE_API_KEY` in Vercel's environment variables
+3. Set `FINNHUB_API_KEY` in Vercel's environment variables
 4. Deploy
 
 ```bash
@@ -282,12 +282,12 @@ Notes and limitations:
 
 ## 🐛 Troubleshooting
 
-### "ALPHA_VANTAGE_API_KEY is not set"
-Ensure your `.env.local` file exists with the correct API key.
+### "FINNHUB_API_KEY is not set"
+Ensure your `.env.local` file exists with the correct API key, or add `FINNHUB_API_KEY` to your Vercel project environment variables.
 
 ### Stock prices showing $0
 - Verify your API key is valid
-- Check Alpha Vantage rate limits (5 requests/minute free tier)
+- Check Finnhub rate limits (free tier has limited requests)
 - Wait a moment and refresh the page
 
 ### Holdings not updating
